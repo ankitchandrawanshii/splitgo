@@ -1,0 +1,18 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+const Otp = require('./models/otp');
+
+async function run() {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('DB Connected!');
+    const otps = await Otp.find({});
+    console.log('Active OTP Records:', JSON.stringify(otps, null, 2));
+    process.exit(0);
+  } catch (err) {
+    console.error('Error:', err);
+    process.exit(1);
+  }
+}
+
+run();

@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Outfit', sans-serif;
+    @apply bg-[#0b0f19] text-slate-100;
+  }
+}
+
+/* Custom styling for sleek dark mode Leaflet Map */
+.leaflet-container {
+  background: #0f172a !important;
+  outline: none;
+}
+
+.leaflet-tile {
+  filter: invert(100%) hue-rotate(180deg) brightness(88%) contrast(95%);
+}
+
+.leaflet-bar {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background-color: #1e293b !important;
+}
+
+.leaflet-bar a {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.2s ease;
+}
+
+.leaflet-bar a:hover {
+  background-color: #334155 !important;
+  color: #ffffff !important;
+}
+
+/* Custom animated sonar radar scan */
+@keyframes sonar-wave {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-radar {
+  animation: sonar-wave 3s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+/* Glassmorphic scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(16, 185, 129, 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.6);
+}
