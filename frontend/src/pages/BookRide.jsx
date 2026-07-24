@@ -153,6 +153,58 @@ export default function BookRide() {
   const [supportSubmitted, setSupportSubmitted] = useState(false);
   const [supportLoading, setSupportLoading] = useState(false);
 
+  // Change Password Modal States
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+  const [oldPasswordInput, setOldPasswordInput] = useState('');
+  const [newPasswordInput, setNewPasswordInput] = useState('');
+  const [confirmPasswordInput, setConfirmPasswordInput] = useState('');
+  const [showOldPass, setShowOldPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [changePasswordLoading, setChangePasswordLoading] = useState(false);
+  const [changePasswordError, setChangePasswordError] = useState('');
+  const [changePasswordSuccess, setChangePasswordSuccess] = useState('');
+
+  const handleChangePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setChangePasswordError('');
+    setChangePasswordSuccess('');
+
+    if (!oldPasswordInput || !newPasswordInput || !confirmPasswordInput) {
+      setChangePasswordError('Please fill in all password fields.');
+      return;
+    }
+
+    if (newPasswordInput.length < 6) {
+      setChangePasswordError('New password must be at least 6 characters.');
+      return;
+    }
+
+    if (newPasswordInput !== confirmPasswordInput) {
+      setChangePasswordError('New passwords do not match! Please check again.');
+      return;
+    }
+
+    setChangePasswordLoading(true);
+    try {
+      const { data } = await api.patch('/auth/change-password', {
+        oldPassword: oldPasswordInput,
+        newPassword: newPasswordInput,
+      });
+      setChangePasswordSuccess(data.message || '✓ Password changed successfully!');
+      setOldPasswordInput('');
+      setNewPasswordInput('');
+      setConfirmPasswordInput('');
+      setTimeout(() => {
+        setShowChangePasswordModal(false);
+        setChangePasswordSuccess('');
+      }, 1800);
+    } catch (err) {
+      setChangePasswordError(err.response?.data?.message || 'Failed to update password. Please check your current password.');
+    } finally {
+      setChangePasswordLoading(false);
+    }
+  };
+
   const handleSupportSubmit = (e) => {
     e.preventDefault();
     if (!supportMessage.trim()) {
@@ -1339,7 +1391,11 @@ export default function BookRide() {
 
                 {/* 2. Change Password */}
                 <button
-                  onClick={() => alert('Password reset link sent to your registered contact!')}
+                  onClick={() => {
+                    setChangePasswordError('');
+                    setChangePasswordSuccess('');
+                    setShowChangePasswordModal(true);
+                  }}
                   className="w-full bg-[#0e1422] border border-slate-800/80 hover:border-slate-700 rounded-3xl p-4 flex items-center justify-between transition-all group text-left"
                 >
                   <div className="flex items-center space-x-3.5">
@@ -1348,7 +1404,7 @@ export default function BookRide() {
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-white tracking-tight">Change Password</h4>
-                      <p className="text-[10px] text-slate-400 mt-0.5">Update security credential</p>
+                      <p className="text-[10px] text-slate-400 mt-0.5">Enter previous & new password</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-slate-500 group-hover:text-emerald-450 transition-colors">➜</span>
@@ -1799,6 +1855,118 @@ export default function BookRide() {
                 {garageSaving ? 'Saving Vehicle...' : 'Save Vehicle to Garage 🚗'}
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Change Password Modal Overlay */}
+      {showChangePasswordModal && (
+        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0e1422] border border-slate-800 rounded-[32px] w-full max-w-sm p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in duration-200">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+              <div className="flex items-center space-x-2.5">
+                <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-lg shadow-sm">
+                  🔑
+                </div>
+                <h3 className="text-base font-extrabold text-white tracking-tight">Change Password</h3>
+              </div>
+              <button
+                onClick={() => {
+                  setShowChangePasswordModal(false);
+                  setChangePasswordError('');
+                  setChangePasswordSuccess('');
+                }}
+                className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-xs transition"
+              >
+                ✕
+              </button>
+            </div>
+
+            {changePasswordSuccess ? (
+              <div className="py-6 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl mx-auto">
+                  ✓
+                </div>
+                <h4 className="text-sm font-bold text-white">Password Updated Successfully!</h4>
+                <p className="text-xs text-slate-400">Use your new password the next time you sign in.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
+                {changePasswordError && (
+                  <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-3 rounded-xl text-xs flex items-center space-x-2">
+                    <span>⚠️ {changePasswordError}</span>
+                  </div>
+                )}
+
+                {/* CURRENT PASSWORD */}
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Current Password</label>
+                  <div className="relative">
+                    <input
+                      type={showOldPass ? 'text' : 'password'}
+                      placeholder="Enter previous password"
+                      value={oldPasswordInput}
+                      onChange={(e) => setOldPasswordInput(e.target.value)}
+                      className="w-full bg-[#080c14] border border-slate-800 text-xs text-slate-200 pl-4 pr-10 py-3 rounded-xl focus:outline-none focus:border-emerald-500 placeholder:text-slate-650"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowOldPass(!showOldPass)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300"
+                    >
+                      <span className="text-xs">{showOldPass ? '🙈' : '👁️'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* NEW PASSWORD */}
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">New Password</label>
+                  <div className="relative">
+                    <input
+                      type={showNewPass ? 'text' : 'password'}
+                      placeholder="Minimum 6 characters"
+                      value={newPasswordInput}
+                      onChange={(e) => setNewPasswordInput(e.target.value)}
+                      className="w-full bg-[#080c14] border border-slate-800 text-xs text-slate-200 pl-4 pr-10 py-3 rounded-xl focus:outline-none focus:border-emerald-500 placeholder:text-slate-650"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPass(!showNewPass)}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300"
+                    >
+                      <span className="text-xs">{showNewPass ? '🙈' : '👁️'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* CONFIRM NEW PASSWORD */}
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Confirm New Password</label>
+                  <input
+                    type="password"
+                    placeholder="Re-enter new password"
+                    value={confirmPasswordInput}
+                    onChange={(e) => setConfirmPasswordInput(e.target.value)}
+                    className="w-full bg-[#080c14] border border-slate-800 text-xs text-slate-200 px-4 py-3 rounded-xl focus:outline-none focus:border-emerald-500 placeholder:text-slate-650"
+                    required
+                  />
+                </div>
+
+                {/* Submit Action Button */}
+                <button
+                  type="submit"
+                  disabled={changePasswordLoading}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-500/20 active:scale-[0.99] mt-2"
+                >
+                  {changePasswordLoading ? 'Updating Password...' : 'Update Password 🔑'}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
