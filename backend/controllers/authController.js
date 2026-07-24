@@ -365,7 +365,11 @@ exports.changePassword = async (req, res) => {
 
     res.json({ message: '✓ Password changed successfully!' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('[CHANGE_PASSWORD_ERROR]', error);
+    const friendlyMsg = error.message.includes('ENOTFOUND') || error.message.includes('querySrv')
+      ? 'Database connection temporary timeout. Please check your internet connection and try again.'
+      : error.message;
+    res.status(500).json({ message: friendlyMsg });
   }
 };
 
