@@ -1086,82 +1086,89 @@ export default function BookRide() {
                   </div>
                 )}
 
-                {/* Profile welcome header card */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3.5">
-                    <div className="w-12 h-12 rounded-full bg-[#0e1422] border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg font-bold shadow-md">
-                      👤
+                {/* Cyber Profile Welcome Card */}
+                <div className="bg-[#0c1222] border border-cyan-500/20 rounded-[28px] p-4 flex items-center justify-between shadow-xl relative overflow-hidden">
+                  <div className="absolute -right-6 -top-6 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl pointer-events-none"></div>
+                  <div className="flex items-center space-x-3.5 relative z-10">
+                    <div className="relative">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-teal-500/20 to-violet-600/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-lg font-black shadow-lg">
+                        👤
+                      </div>
+                      <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#0c1222] flex items-center justify-center text-[8px] text-slate-950 font-bold">✓</span>
                     </div>
                     <div className="text-left">
-                      <span className="text-[9px] uppercase font-bold text-slate-500 tracking-widest leading-3 block">WELCOME BACK</span>
-                      <h2 className="text-lg font-extrabold text-white leading-tight mt-0.5">
+                      <span className="text-[9px] uppercase font-black text-cyan-400 tracking-widest leading-3 block">ONLINE COMMUTER</span>
+                      <h2 className="text-base font-extrabold text-white leading-tight mt-0.5">
                         {user?.name || 'Rider Name'}
                       </h2>
                     </div>
                   </div>
 
-                  {/* SplitGo Gold Verified Badge */}
-                  <div className="bg-[#1c180a] border border-amber-500/30 px-3 py-1.5 rounded-full flex items-center space-x-1.5 shadow-md">
-                    <span className="text-[10px] text-amber-400 font-bold">🎗️</span>
-                    <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider">SplitGo Gold Verified</span>
+                  {/* SplitGo Verified Badge */}
+                  <div className="bg-[#151d30] border border-amber-500/30 px-3 py-1.5 rounded-2xl flex items-center space-x-1.5 shadow-md">
+                    <span className="text-[11px] text-amber-400">🎗️</span>
+                    <span className="text-[9px] font-black text-amber-300 uppercase tracking-wider">Verified 5.0★</span>
                   </div>
                 </div>
 
                 {/* Driver Earnings & Eco Fuel Savings Card */}
                 {analyticsStats && (
-                  <div className="bg-[#0e1422] border border-emerald-500/20 rounded-3xl p-4 space-y-2.5 shadow-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">🌱 Driver Earnings & Eco Impact</span>
-                      <span className="text-[9px] text-emerald-400 font-bold">Updated Live</span>
+                  <div className="bg-[#0c1222] border border-cyan-500/20 rounded-[28px] p-4 space-y-2.5 shadow-xl">
+                    <div className="flex justify-between items-center border-b border-slate-800/80 pb-2">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-cyan-400 flex items-center space-x-1">
+                        <span>🌱</span>
+                        <span>ECO COMMUTE IMPACT</span>
+                      </span>
+                      <span className="text-[9px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold px-2 py-0.5 rounded-full">Live Ticker</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-[#080c14] p-2.5 rounded-2xl border border-slate-800/80">
-                        <span className="text-[9px] text-slate-500 block uppercase">Fare Saved</span>
-                        <strong className="text-xs text-emerald-400 font-extrabold">₹{analyticsStats.totalFareSaved}</strong>
+                    <div className="grid grid-cols-3 gap-2 text-center pt-0.5">
+                      <div className="bg-[#070b16] p-2.5 rounded-2xl border border-slate-800/80">
+                        <span className="text-[9px] text-slate-400 block uppercase font-bold">Fare Saved</span>
+                        <strong className="text-xs text-cyan-400 font-black mt-0.5 block">₹{analyticsStats.totalFareSaved}</strong>
                       </div>
-                      <div className="bg-[#080c14] p-2.5 rounded-2xl border border-slate-800/80">
-                        <span className="text-[9px] text-slate-500 block uppercase">Fuel Saved</span>
-                        <strong className="text-xs text-teal-300 font-extrabold">{analyticsStats.fuelSavedLiters} L</strong>
+                      <div className="bg-[#070b16] p-2.5 rounded-2xl border border-slate-800/80">
+                        <span className="text-[9px] text-slate-400 block uppercase font-bold">Fuel Saved</span>
+                        <strong className="text-xs text-teal-300 font-black mt-0.5 block">{analyticsStats.fuelSavedLiters} L</strong>
                       </div>
-                      <div className="bg-[#080c14] p-2.5 rounded-2xl border border-slate-800/80">
-                        <span className="text-[9px] text-slate-500 block uppercase">CO2 Offset</span>
-                        <strong className="text-xs text-amber-400 font-extrabold">{analyticsStats.co2SavedKg} kg</strong>
+                      <div className="bg-[#070b16] p-2.5 rounded-2xl border border-slate-800/80">
+                        <span className="text-[9px] text-slate-400 block uppercase font-bold">CO2 Offset</span>
+                        <strong className="text-xs text-amber-400 font-black mt-0.5 block">{analyticsStats.co2SavedKg} kg</strong>
                       </div>
                     </div>
                   </div>
                 )}
 
                 {/* Wallet Balance Card */}
-                <div className="bg-gradient-to-br from-emerald-400 via-emerald-500 to-teal-600 rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[140px] text-slate-950">
-                  <div className="absolute -right-10 -bottom-10 w-32 h-32 bg-white/10 rounded-full"></div>
+                <div className="bg-gradient-to-br from-cyan-500 via-teal-400 to-violet-600 rounded-[30px] p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[145px] text-slate-950">
+                  <div className="absolute -right-8 -bottom-8 w-36 h-36 bg-white/10 rounded-full blur-lg"></div>
                   
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between relative z-10">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 rounded-xl bg-slate-950/15 flex items-center justify-center text-slate-950 text-xl font-bold">
+                      <div className="w-11 h-11 rounded-2xl bg-slate-950/20 border border-slate-950/20 flex items-center justify-center text-slate-950 text-xl font-black shadow-inner">
                         💼
                       </div>
                       <div>
-                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-950/80">SplitGo Wallet</span>
-                        <p className="text-2xl font-black mt-0.5">₹{walletBalance.toFixed(2)}</p>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-950/80 block">SPLITGO PASS BALANCE</span>
+                        <p className="text-2xl font-black mt-0.5 tracking-tight">₹{walletBalance.toFixed(2)}</p>
                       </div>
                     </div>
                   </div>
 
                   {/* Add & Withdraw actions */}
-                  <div className="flex space-x-3 mt-4">
+                  <div className="flex space-x-2.5 mt-4 relative z-10">
                     <button
                       onClick={() => {
                         setPaymentStep('input');
                         setPaymentError('');
                         setShowPaymentModal(true);
                       }}
-                      className="flex-1 bg-slate-950 text-white font-bold py-2.5 rounded-xl text-xs transition shadow-md hover:bg-slate-900"
+                      className="flex-1 bg-slate-950 text-white font-black py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg hover:bg-slate-900 active:scale-[0.98]"
                     >
                       + Add Balance
                     </button>
                     <button
                       onClick={handleWithdraw}
-                      className="flex-1 bg-white/20 hover:bg-white/30 border border-slate-950/20 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition"
+                      className="flex-1 bg-white/20 hover:bg-white/30 border border-slate-950/20 text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase tracking-wider transition"
                     >
                       Withdraw
                     </button>
@@ -1169,13 +1176,15 @@ export default function BookRide() {
                 </div>
 
                 {/* Booking Prompt */}
-                <div className="pt-2">
-                  <h3 className="text-xl font-extrabold tracking-tight text-white">Where are you going today?</h3>
-                  <p className="text-xs text-slate-400 mt-1">Choose your mode for instant commuter matching:</p>
+                <div className="pt-1 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-black tracking-tight text-white">Start Your Commute</h3>
+                    <p className="text-[11px] text-slate-400">Select mode for instant AI co-rider matching:</p>
+                  </div>
                 </div>
 
                 {/* Booking Modes Selection grid */}
-                <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
                   {/* Option A: Passenger card */}
                   <button
                     onClick={() => {
@@ -1183,18 +1192,16 @@ export default function BookRide() {
                       setDrop({ address: '', lat: '', lng: '' });
                       setBookingMode('passenger');
                     }}
-                    className="w-full text-left bg-[#0e1422] border border-emerald-500/20 hover:border-emerald-400/50 rounded-3xl p-5 flex items-center justify-between transition-all group shadow-lg"
+                    className="text-left bg-[#0c1222] border border-cyan-500/25 hover:border-cyan-400 rounded-[26px] p-4 flex flex-col justify-between transition-all group shadow-xl relative overflow-hidden min-h-[135px]"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/5 group-hover:scale-105 transition-transform">
-                        👤
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-wider">I am a Passenger</h4>
-                        <p className="text-[11px] text-slate-400 mt-1 leading-normal">Book a ride, share fuel costs & travel safe</p>
-                      </div>
+                    <div className="w-10 h-10 rounded-2xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-400 flex items-center justify-center text-lg shadow-md group-hover:scale-110 transition-transform">
+                      📍
                     </div>
-                    <span className="text-sm font-bold text-slate-500 group-hover:text-emerald-400 transition-colors">➜</span>
+                    <div className="mt-3">
+                      <span className="text-[9px] font-black text-cyan-400 uppercase tracking-widest block">PASSENGER MODE</span>
+                      <h4 className="text-xs font-black text-white mt-0.5">Route Match ➜</h4>
+                      <p className="text-[10px] text-slate-400 mt-1 leading-tight">Find co-riders & split fare</p>
+                    </div>
                   </button>
 
                   {/* Option B: Rider card */}
@@ -1204,18 +1211,16 @@ export default function BookRide() {
                       setDrop({ address: '', lat: '', lng: '' });
                       setBookingMode('rider_manage');
                     }}
-                    className="w-full text-left bg-[#0e1422] border border-emerald-500/20 hover:border-emerald-400/50 rounded-3xl p-5 flex items-center justify-between transition-all group shadow-lg"
+                    className="text-left bg-[#0c1222] border border-violet-500/25 hover:border-violet-400 rounded-[26px] p-4 flex flex-col justify-between transition-all group shadow-xl relative overflow-hidden min-h-[135px]"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-400/20 text-emerald-400 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/5 group-hover:scale-105 transition-transform">
-                        🚗
-                      </div>
-                      <div>
-                        <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">I am a Rider</h4>
-                        <p className="text-[11px] text-slate-400 mt-1 leading-normal">Add vehicle, create rides & offset fuel costs</p>
-                      </div>
+                    <div className="w-10 h-10 rounded-2xl bg-violet-600/15 border border-violet-500/30 text-violet-400 flex items-center justify-center text-lg shadow-md group-hover:scale-110 transition-transform">
+                      🚀
                     </div>
-                    <span className="text-sm font-bold text-slate-500 group-hover:text-emerald-400 transition-colors">➜</span>
+                    <div className="mt-3">
+                      <span className="text-[9px] font-black text-violet-400 uppercase tracking-widest block">RIDER MODE</span>
+                      <h4 className="text-xs font-black text-white mt-0.5">Publish Trip ➜</h4>
+                      <p className="text-[10px] text-slate-400 mt-1 leading-tight">Offer seats & offset fuel</p>
+                    </div>
                   </button>
                 </div>
 
