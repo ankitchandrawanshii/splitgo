@@ -8,7 +8,7 @@ export default function Register() {
   const navigate = useNavigate();
 
   // Wizard Step Tracker
-  const [step, setStep] = useState(1); // 1 = Credentials, 2 = Mobile OTP
+  const [step, setStep] = useState(1); // 1 = Basic Info, 2 = Mobile OTP
 
   // Step 1: Basic Info
   const [name, setName] = useState('');
@@ -110,26 +110,26 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-[#080c14] px-4 py-8 overflow-hidden font-sans text-slate-100">
-      {/* Emerald Ambient Background Glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-[380px] h-[380px] bg-amber-500/10 rounded-full blur-[150px] pointer-events-none"></div>
+    <div className="min-h-screen relative flex items-center justify-center bg-[#070913] bg-cyber-mesh px-4 py-8 overflow-hidden font-sans text-slate-100">
+      {/* Cyber Glow Orbs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute bottom-10 right-10 w-[380px] h-[380px] bg-violet-600/10 rounded-full blur-[150px] pointer-events-none"></div>
 
-      {/* Main Outer Phone Frame */}
-      <div className="w-full max-w-[400px] bg-[#0c1220]/95 backdrop-blur-2xl border border-emerald-500/20 rounded-[38px] p-6 shadow-2xl relative z-10 space-y-5">
+      {/* Main Outer SplitGo Phone Container */}
+      <div className="w-full max-w-[400px] bg-[#0c1222]/90 backdrop-blur-2xl border border-cyan-500/20 rounded-[38px] p-6 shadow-2xl relative z-10 space-y-5">
         
         {/* Back Link */}
         <div className="flex items-center pt-1">
-          <Link to="/login" className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors">
+          <Link to="/login" className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 hover:text-cyan-300 transition-colors">
             <span>←</span>
             <span>Back to Sign In</span>
           </Link>
         </div>
 
         {/* Inner Card Container */}
-        <div className="bg-[#0e1422] border border-slate-800/90 rounded-3xl p-6 shadow-xl space-y-4">
+        <div className="bg-[#0e1628]/80 border border-slate-800/90 rounded-3xl p-6 shadow-xl space-y-4">
           <div>
-            <h1 className="text-xl font-bold text-emerald-400 tracking-tight">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent tracking-tight">
               Create Account
             </h1>
             <p className="text-slate-400 text-xs mt-0.5">
@@ -141,7 +141,7 @@ export default function Register() {
             <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-3 rounded-xl text-xs space-y-1">
               <p>⚠️ {error}</p>
               {error.toLowerCase().includes('already registered') && (
-                <Link to="/login" className="text-emerald-400 font-bold block underline">
+                <Link to="/login" className="text-cyan-400 font-bold block underline">
                   Click here to Login →
                 </Link>
               )}
@@ -149,7 +149,7 @@ export default function Register() {
           )}
 
           {success && (
-            <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-3 rounded-xl text-xs">
+            <div className="bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 p-3 rounded-xl text-xs">
               <span>{success}</span>
             </div>
           )}
@@ -162,7 +162,7 @@ export default function Register() {
                 <label className="text-xs font-medium text-slate-300">Full Name</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 pointer-events-none">
-                    <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </span>
@@ -171,7 +171,7 @@ export default function Register() {
                     placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-[#080c14] border border-slate-800 focus:border-emerald-500 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#070b16] border border-slate-800 focus:border-cyan-400 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
                     required
                   />
                 </div>
@@ -185,7 +185,7 @@ export default function Register() {
                     type="button"
                     onClick={() => setGender('female')}
                     className={`py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center space-x-1.5 ${
-                      gender === 'female' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-[#080c14] border-slate-800 text-slate-400'
+                      gender === 'female' ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-md' : 'bg-[#070b16] border-slate-800 text-slate-400'
                     }`}
                   >
                     <span>👩 Female</span>
@@ -194,7 +194,7 @@ export default function Register() {
                     type="button"
                     onClick={() => setGender('male')}
                     className={`py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center space-x-1.5 ${
-                      gender === 'male' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-[#080c14] border-slate-800 text-slate-400'
+                      gender === 'male' ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-md' : 'bg-[#070b16] border-slate-800 text-slate-400'
                     }`}
                   >
                     <span>👨 Male</span>
@@ -207,7 +207,7 @@ export default function Register() {
                 <label className="text-xs font-medium text-slate-300">Email Address</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 pointer-events-none">
-                    <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </span>
@@ -216,7 +216,7 @@ export default function Register() {
                     placeholder="john@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#080c14] border border-slate-800 focus:border-emerald-500 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#070b16] border border-slate-800 focus:border-cyan-400 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function Register() {
                 <label className="text-xs font-medium text-slate-300">Phone Number</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 pointer-events-none">
-                    <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </span>
@@ -235,7 +235,7 @@ export default function Register() {
                     placeholder="+91 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-[#080c14] border border-slate-800 focus:border-emerald-500 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#070b16] border border-slate-800 focus:border-cyan-400 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
                     required
                   />
                 </div>
@@ -246,7 +246,7 @@ export default function Register() {
                 <label className="text-xs font-medium text-slate-300">Password</label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500 pointer-events-none">
-                    <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <svg className="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                   </span>
@@ -255,7 +255,7 @@ export default function Register() {
                     placeholder="Minimum 6 characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[#080c14] border border-slate-800 focus:border-emerald-500 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#070b16] border border-slate-800 focus:border-cyan-400 text-slate-100 text-xs rounded-xl pl-10 pr-4 py-2.5 focus:outline-none transition-all placeholder:text-slate-600"
                     required
                   />
                 </div>
@@ -268,19 +268,19 @@ export default function Register() {
                   id="terms"
                   checked={agreedTerms}
                   onChange={(e) => setAgreedTerms(e.target.checked)}
-                  className="mt-0.5 rounded accent-emerald-500 border-slate-800 bg-[#080c14]"
+                  className="mt-0.5 rounded accent-cyan-400 border-slate-800 bg-[#070b16]"
                 />
                 <label htmlFor="terms" className="text-[11px] text-slate-400 leading-tight">
-                  I agree to the <span className="text-emerald-400 hover:underline cursor-pointer">Terms & Conditions</span> and <span className="text-emerald-400 hover:underline cursor-pointer">Privacy Policy</span>.
+                  I agree to the <span className="text-cyan-400 hover:underline cursor-pointer">Terms & Conditions</span> and <span className="text-cyan-400 hover:underline cursor-pointer">Privacy Policy</span>.
                 </label>
               </div>
 
               {/* Register Button */}
               <button
                 type="submit"
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-emerald-500/20 active:scale-[0.99] transition-all text-xs flex items-center justify-center space-x-1.5 mt-3 uppercase tracking-wider"
+                className="w-full bg-gradient-to-r from-cyan-500 via-teal-400 to-violet-500 hover:from-cyan-400 hover:to-violet-600 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition-all text-xs flex items-center justify-center space-x-1.5 mt-3 uppercase tracking-wider"
               >
-                <span>Register</span>
+                <span>Register Account</span>
                 <span>👤+</span>
               </button>
             </form>
@@ -290,7 +290,7 @@ export default function Register() {
           {step === 2 && (
             <div className="space-y-4 pt-1">
               <p className="text-xs text-slate-300">
-                Confirm phone number <strong className="text-emerald-400">{phone}</strong> via OTP verification:
+                Confirm phone number <strong className="text-cyan-400">{phone}</strong> via OTP verification:
               </p>
 
               {!mobileVerified ? (
@@ -299,7 +299,7 @@ export default function Register() {
                     <button
                       onClick={handleSendMobileOtp}
                       disabled={loading}
-                      className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-xs transition uppercase tracking-wider"
+                      className="w-full bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black py-3 rounded-xl text-xs transition uppercase tracking-wider"
                     >
                       {loading ? 'Sending OTP...' : 'Send Mobile Verification OTP 📲'}
                     </button>
@@ -311,7 +311,7 @@ export default function Register() {
                         placeholder="••••••"
                         value={mobileOtp}
                         onChange={(e) => setMobileOtp(e.target.value)}
-                        className="w-full bg-[#080c14] border border-slate-800 text-center tracking-[6px] text-base font-bold text-white py-2.5 rounded-xl focus:outline-none focus:border-emerald-500"
+                        className="w-full bg-[#070b16] border border-slate-800 text-center tracking-[6px] text-base font-bold text-white py-2.5 rounded-xl focus:outline-none focus:border-cyan-400"
                         required
                       />
                       <div className="flex space-x-2">
@@ -325,7 +325,7 @@ export default function Register() {
                         <button
                           type="submit"
                           disabled={loading}
-                          className="flex-1 bg-emerald-500 text-slate-950 font-black py-2.5 rounded-xl text-xs"
+                          className="flex-1 bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black py-2.5 rounded-xl text-xs"
                         >
                           {loading ? 'Verifying...' : 'Verify Code'}
                         </button>
@@ -337,7 +337,7 @@ export default function Register() {
                 <button
                   onClick={handleCompleteRegistration}
                   disabled={loading}
-                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-lg shadow-emerald-500/20 uppercase tracking-wider"
+                  className="w-full bg-gradient-to-r from-cyan-500 via-teal-400 to-violet-500 text-slate-950 font-black py-3 rounded-xl text-xs transition shadow-lg shadow-cyan-500/20 uppercase tracking-wider"
                 >
                   {loading ? 'Registering...' : 'Complete Sign Up & Launch 🚀'}
                 </button>
