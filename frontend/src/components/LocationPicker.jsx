@@ -4,6 +4,7 @@ export default function LocationPicker({ label, value, onChange, placeholder, ic
   const [query, setQuery] = useState(value.address || '');
   const [suggestions, setSuggestions] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const debounceRef = useRef(null);
 
   // Keep query local state synced with outer changes (e.g. reverse geocoding from map click)
@@ -72,9 +73,52 @@ export default function LocationPicker({ label, value, onChange, placeholder, ic
     }
   };
 
+  const handleVoiceRecognition = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Speech Recognition is not supported by your browser. Please try Chrome or Edge over HTTPS.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.lang = 'en-IN';
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript) {
+        handleQueryChange(transcript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
+  };
+
   return (
     <div className="relative space-y-1">
-      <label className="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-1">{label}</label>
+      <div className="flex items-center justify-between px-1">
+        <label className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">{label}</label>
+        {isListening && (
+          <span className="text-[10px] text-emerald-400 font-semibold animate-pulse flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Listening...
+          </span>
+        )}
+      </div>
+
       <div className="relative flex items-center">
         {/* Leading Icon */}
         {icon && (
@@ -84,13 +128,28 @@ export default function LocationPicker({ label, value, onChange, placeholder, ic
         )}
         <input
           type="text"
-          placeholder={placeholder || `Search ${label.toLowerCase()} location...`}
+          placeholder={isListening ? 'Speak your location...' : placeholder || `Search ${label.toLowerCase()} location...`}
           value={query}
           onChange={(e) => handleQueryChange(e.target.value)}
-          className="w-full bg-[#080c14] border border-slate-800 hover:border-slate-700 focus:border-emerald-500 text-slate-100 rounded-2xl pl-10 pr-20 py-3 focus:outline-none focus:ring-1 focus:ring-emerald-500/20 transition-all placeholder:text-slate-600 text-xs"
+          className={`w-full bg-[#080c14] border ${
+            isListening ? 'border-emerald-500 ring-2 ring-emerald-500/20' : 'border-slate-800 hover:border-slate-700 focus:border-emerald-500'
+          } text-slate-100 rounded-2xl pl-10 pr-24 py-3 focus:outline-none transition-all placeholder:text-slate-600 text-xs`}
         />
-        {/* Action buttons: GPS & Map */}
+        {/* Action buttons: Speech Recognition & GPS */}
         <div className="absolute right-2.5 flex items-center space-x-1">
+          <button
+            type="button"
+            onClick={handleVoiceRecognition}
+            title="Voice Location Recognition (Speak)"
+            className={`w-7 h-7 rounded-xl flex items-center justify-center text-xs transition border ${
+              isListening
+                ? 'bg-emerald-500 text-white border-emerald-400 animate-pulse'
+                : 'bg-slate-900 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border-slate-800'
+            }`}
+          >
+            🎙️
+          </button>
+
           <button
             type="button"
             onClick={handleUseCurrentLocation}

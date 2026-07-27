@@ -23,7 +23,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Attach io to req so controllers can emit events if needed
@@ -38,6 +42,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/promo', promoRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
+app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
 app.get('/', (req, res) => res.send('SplitGo API is running'));
 
 // Socket.io connection for live location + chat + SOS between matched riders
