@@ -2,9 +2,10 @@
   "name": "splitgo-root",
   "version": "1.0.0",
   "private": true,
+  "main": "index.js",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build",
-    "start": "cd backend && node server.js",
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node index.js",
     "start:backend": "cd backend && node server.js",
     "build:frontend": "cd frontend && npm install && npm run build"
   }
