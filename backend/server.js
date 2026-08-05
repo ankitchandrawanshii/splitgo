@@ -43,7 +43,21 @@ app.use('/api/promo', promoRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date() }));
-app.get('/', (req, res) => res.send('SplitGo API is running'));
+
+// Serve built frontend static files if available
+const path = require('path');
+const fs = require('fs');
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => res.send('SplitGo API is running'));
+}
 
 // Socket.io connection for live location + chat + SOS between matched riders
 io.on('connection', (socket) => {
