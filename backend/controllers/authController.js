@@ -119,7 +119,7 @@ exports.sendOTP = async (req, res) => {
       return res.status(400).json({ message: 'Identifier is required' });
     }
 
-    const cleanIdentifier = identifier.trim();
+    const cleanIdentifier = type === 'mobile' ? normalizePhone(identifier) : identifier.trim().toLowerCase();
 
     // Generate random 6-digit OTP code
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -129,7 +129,7 @@ exports.sendOTP = async (req, res) => {
     await Otp.findOneAndUpdate(
       { identifier: cleanIdentifier, purpose: type },
       { otp, expiresAt },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     if (type === 'email') {
@@ -237,7 +237,7 @@ exports.verifyOTP = async (req, res) => {
       return res.status(400).json({ message: 'Identifier and OTP code are required' });
     }
 
-    const cleanIdentifier = identifier.trim();
+    const cleanIdentifier = type === 'mobile' ? normalizePhone(identifier) : identifier.trim().toLowerCase();
     const cleanOtp = otp.trim();
 
     const record = await Otp.findOne({ identifier: cleanIdentifier, purpose: type });
