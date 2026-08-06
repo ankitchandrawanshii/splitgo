@@ -40,11 +40,27 @@ exports.register = async (req, res) => {
       ],
     });
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     if (existing) {
-      return res.status(400).json({ message: 'Phone number already registered' });
+      existing.name = name || existing.name;
+      if (email) existing.email = email;
+      existing.password = hashedPassword;
+      existing.isPhoneVerified = true;
+      await existing.save();
+
+      return res.status(200).json({
+        _id: existing._id,
+        name: existing.name,
+        phone: existing.phone,
+        email: existing.email,
+        role: existing.role,
+        isPhoneVerified: existing.isPhoneVerified,
+        isEmailVerified: existing.isEmailVerified,
+        token: generateToken(existing._id),
+      });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       phone: last10, // store clean 10-digit base
