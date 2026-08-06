@@ -118,7 +118,22 @@ export default function Register() {
       login(data);
       navigate('/book');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed.');
+      const serverMsg = err.response?.data?.message || '';
+
+      // If phone number is already registered, attempt auto-login
+      if (serverMsg.toLowerCase().includes('already registered') || serverMsg.toLowerCase().includes('already exists')) {
+        try {
+          const { data: loginData } = await api.post('/auth/login', { phone, password });
+          login(loginData);
+          navigate('/book');
+          return;
+        } catch (loginErr) {
+          setError('Phone number is already registered. Please click "Back to Sign In" to log in.');
+          return;
+        }
+      }
+
+      setError(serverMsg || 'Registration failed. Please check your network connection.');
     } finally {
       setLoading(false);
     }
