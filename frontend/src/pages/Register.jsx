@@ -295,43 +295,38 @@ export default function Register() {
 
               {!mobileVerified ? (
                 <div className="space-y-3">
-                  {!mobileOtpSent ? (
-                    <button
-                      onClick={handleSendMobileOtp}
-                      disabled={loading}
-                      className="w-full bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black py-3 rounded-xl text-xs transition uppercase tracking-wider"
-                    >
-                      {loading ? 'Sending OTP...' : 'Send Mobile Verification OTP 📲'}
-                    </button>
-                  ) : (
-                    <form onSubmit={handleVerifyMobileOtp} className="space-y-3">
+                  <form onSubmit={handleVerifyMobileOtp} className="space-y-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-slate-300">Enter 6-Digit OTP Code</label>
                       <input
                         type="text"
                         maxLength={6}
                         placeholder="••••••"
                         value={mobileOtp}
                         onChange={(e) => setMobileOtp(e.target.value)}
-                        className="w-full bg-[#070b16] border border-slate-800 text-center tracking-[6px] text-base font-bold text-white py-2.5 rounded-xl focus:outline-none focus:border-cyan-400"
+                        className="w-full bg-[#070b16] border border-slate-800 text-center tracking-[6px] text-lg font-bold text-white py-3 rounded-xl focus:outline-none focus:border-cyan-400"
                         required
                       />
-                      <div className="flex space-x-2">
-                        <button
-                          type="button"
-                          onClick={handleSendMobileOtp}
-                          className="flex-1 bg-slate-900 border border-slate-800 text-slate-400 font-semibold py-2.5 rounded-xl text-xs"
-                        >
-                          Resend
-                        </button>
-                        <button
-                          type="submit"
-                          disabled={loading}
-                          className="flex-1 bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black py-2.5 rounded-xl text-xs"
-                        >
-                          {loading ? 'Verifying...' : 'Verify Code'}
-                        </button>
-                      </div>
-                    </form>
-                  )}
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={handleSendMobileOtp}
+                        disabled={loading}
+                        className="flex-1 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-cyan-400 font-bold py-2.5 rounded-xl text-xs transition"
+                      >
+                        {loading ? 'Sending...' : '📲 Send / Resend OTP'}
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={loading}
+                        className="flex-1 bg-gradient-to-r from-cyan-500 to-teal-400 text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase tracking-wider"
+                      >
+                        {loading ? 'Verifying...' : 'Verify Code'}
+                      </button>
+                    </div>
+                  </form>
                 </div>
               ) : (
                 <button

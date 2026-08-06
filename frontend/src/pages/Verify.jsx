@@ -176,43 +176,34 @@ export default function Verify() {
 
             {!phoneVerified && (
               <div className="space-y-3 pt-2">
-                {!mobileOtpSent ? (
-                  <button
-                    onClick={handleSendMobileOtp}
-                    disabled={loadingMobile}
-                    className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2.5 rounded-xl text-xs transition disabled:opacity-50"
-                  >
-                    {loadingMobile ? 'Sending...' : 'Send OTP Verification Code'}
-                  </button>
-                ) : (
-                  <form onSubmit={handleVerifyMobileOtp} className="space-y-3">
-                    <input
-                      type="text"
-                      maxLength={6}
-                      placeholder="Enter 6-digit code"
-                      value={mobileOtp}
-                      onChange={(e) => setMobileOtp(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 text-center tracking-[6px] text-lg font-bold text-white py-2 rounded-xl focus:outline-none focus:border-emerald-500 transition-colors"
-                      required
-                    />
-                    <div className="flex space-x-2">
-                      <button
-                        type="button"
-                        onClick={handleSendMobileOtp}
-                        className="flex-1 bg-slate-850 hover:bg-slate-800 text-slate-400 font-semibold py-2 rounded-xl text-xs transition"
-                      >
-                        Resend
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={loadingMobile}
-                        className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded-xl text-xs transition"
-                      >
-                        {loadingMobile ? 'Verifying...' : 'Verify Code'}
-                      </button>
-                    </div>
-                  </form>
-                )}
+                <form onSubmit={handleVerifyMobileOtp} className="space-y-3">
+                  <input
+                    type="text"
+                    maxLength={6}
+                    placeholder="Enter 6-digit OTP code"
+                    value={mobileOtp}
+                    onChange={(e) => setMobileOtp(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-800 text-center tracking-[6px] text-lg font-bold text-white py-2.5 rounded-xl focus:outline-none focus:border-cyan-400 transition-colors"
+                    required
+                  />
+                  <div className="flex space-x-2">
+                    <button
+                      type="button"
+                      onClick={handleSendMobileOtp}
+                      disabled={loadingMobile}
+                      className="flex-1 bg-slate-800 hover:bg-slate-700 text-cyan-400 font-semibold py-2 rounded-xl text-xs transition disabled:opacity-50"
+                    >
+                      {loadingMobile ? 'Sending...' : '📲 Send / Resend OTP'}
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={loadingMobile}
+                      className="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black py-2 rounded-xl text-xs transition"
+                    >
+                      {loadingMobile ? 'Verifying...' : 'Verify Code'}
+                    </button>
+                  </div>
+                </form>
 
                 {errorMobile && <p className="text-red-400 text-xs px-1">{errorMobile}</p>}
                 {successMobile && <p className="text-emerald-400 text-xs px-1">{successMobile}</p>}
