@@ -17,7 +17,11 @@ const userSchema = new mongoose.Schema(
     referralCode: { type: String, default: '' },
     referredBy: { type: String, default: '' },
     vehicleDetails: {
+      vehicleType: { type: String, default: 'scooty' },
+      nickname: { type: String, default: '' },
+      brand: { type: String, default: '' },
       model: { type: String, default: '' },
+      mileage: { type: String, default: '' },
       number: { type: String, default: '' },
     },
   },

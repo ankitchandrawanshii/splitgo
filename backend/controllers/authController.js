@@ -369,7 +369,11 @@ exports.updateProfile = async (req, res) => {
 
     if (vehicleDetails) {
       user.vehicleDetails = {
+        vehicleType: vehicleDetails.vehicleType || vehicleDetails.type || 'scooty',
+        nickname: vehicleDetails.nickname || '',
+        brand: vehicleDetails.brand || '',
         model: vehicleDetails.model || '',
+        mileage: String(vehicleDetails.mileage || ''),
         number: vehicleDetails.number || '',
       };
     }
