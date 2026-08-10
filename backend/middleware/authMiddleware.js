@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const JWT_SECRET = process.env.JWT_SECRET || 'splitgo_super_secret_jwt_key_2026_safe_fallback';
 
 module.exports = function protect(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -8,7 +9,7 @@ module.exports = function protect(req, res, next) {
 
   try {
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = { id: decoded.id };
     next();
   } catch (error) {

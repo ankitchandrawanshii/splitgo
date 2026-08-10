@@ -10,8 +10,10 @@ try {
   console.log('[INFO] nodemailer is not installed; email OTPs will log to console.');
 }
 
+const JWT_SECRET = process.env.JWT_SECRET || 'splitgo_super_secret_jwt_key_2026_safe_fallback';
+
 const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+  jwt.sign({ id }, JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
 
 // Normalize phone numbers to match 10-digit base or formatted strings
 const normalizePhone = (p) => {
@@ -311,7 +313,7 @@ exports.verifyOTP = async (req, res) => {
     if (authHeader && authHeader.startsWith('Bearer ')) {
       try {
         const token = authHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET);
         userId = decoded.id;
       } catch (tokenErr) {
         // Ignore invalid token, treat as anonymous
