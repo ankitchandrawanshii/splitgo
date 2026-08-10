@@ -64,19 +64,22 @@ io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
   socket.on('joinRide', (rideId) => {
-    socket.join(rideId);
+    if (rideId) socket.join(rideId);
+    socket.join('shared_live_room');
   });
 
   socket.on('locationUpdate', ({ rideId, lat, lng }) => {
-    socket.to(rideId).emit('partnerLocation', { lat, lng });
+    if (rideId) socket.to(rideId).emit('partnerLocation', { lat, lng });
+    socket.broadcast.emit('partnerLocation', { lat, lng });
   });
 
   socket.on('chatMessage', ({ rideId, message, senderId }) => {
-    socket.to(rideId).emit('chatMessage', { message, senderId });
+    if (rideId) socket.to(rideId).emit('chatMessage', { message, senderId });
+    socket.broadcast.emit('chatMessage', { message, senderId });
   });
 
   socket.on('sosAlert', ({ rideId, senderName, coords }) => {
-    io.to(rideId).emit('sosAlert', { senderName, coords });
+    io.emit('sosAlert', { senderName, coords });
   });
 
   socket.on('disconnect', () => {
