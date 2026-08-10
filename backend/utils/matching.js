@@ -85,10 +85,28 @@ async function findMatch(newRide, options = {}) {
       continue;
     }
 
+    if (
+      !newRide.pickup?.location?.coordinates ||
+      !newRide.drop?.location?.coordinates ||
+      !candidate.pickup?.location?.coordinates ||
+      !candidate.drop?.location?.coordinates
+    ) {
+      continue;
+    }
+
     const [newPickupLng, newPickupLat] = newRide.pickup.location.coordinates;
     const [candPickupLng, candPickupLat] = candidate.pickup.location.coordinates;
     const [newDropLng, newDropLat] = newRide.drop.location.coordinates;
     const [candDropLng, candDropLat] = candidate.drop.location.coordinates;
+
+    if (
+      isNaN(newPickupLat) || isNaN(newPickupLng) ||
+      isNaN(candPickupLat) || isNaN(candPickupLng) ||
+      isNaN(newDropLat) || isNaN(newDropLng) ||
+      isNaN(candDropLat) || isNaN(candDropLng)
+    ) {
+      continue;
+    }
 
     const pickupDist = calculateDistanceKm(newPickupLat, newPickupLng, candPickupLat, candPickupLng);
     const dropDist = calculateDistanceKm(newDropLat, newDropLng, candDropLat, candDropLng);

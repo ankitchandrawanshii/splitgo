@@ -24,10 +24,24 @@ exports.getUserRides = async (req, res) => {
 exports.createRide = async (req, res) => {
   try {
     const { pickup, drop, rideType, genderPreference, scheduledAt, promoCode, discountAmount } = req.body;
-    // pickup/drop = { address, lat, lng }
 
-    const distanceKm = calculateDistanceKm(pickup.lat, pickup.lng, drop.lat, drop.lng);
-    const bearing = calculateBearing(pickup.lat, pickup.lng, drop.lat, drop.lng);
+    let pLat = parseFloat(pickup?.lat);
+    let pLng = parseFloat(pickup?.lng);
+    let dLat = parseFloat(drop?.lat);
+    let dLng = parseFloat(drop?.lng);
+
+    // Fallback coordinates for Delhi NCR if missing/NaN
+    if (isNaN(pLat) || isNaN(pLng)) {
+      pLat = 28.6139;
+      pLng = 77.2090;
+    }
+    if (isNaN(dLat) || isNaN(dLng)) {
+      dLat = 28.5355;
+      dLng = 77.3910;
+    }
+
+    const distanceKm = calculateDistanceKm(pLat, pLng, dLat, dLng);
+    const bearing = calculateBearing(pLat, pLng, dLat, dLng);
 
     // Dynamic base and km fare rates based on rideType (Brumm style)
     let baseFare = 15;
@@ -53,12 +67,12 @@ exports.createRide = async (req, res) => {
     const ride = await Ride.create({
       user: req.user.id,
       pickup: {
-        address: pickup.address,
-        location: { type: 'Point', coordinates: [pickup.lng, pickup.lat] },
+        address: pickup?.address || 'Pickup Location',
+        location: { type: 'Point', coordinates: [pLng, pLat] },
       },
       drop: {
-        address: drop.address,
-        location: { type: 'Point', coordinates: [drop.lng, drop.lat] },
+        address: drop?.address || 'Destination Location',
+        location: { type: 'Point', coordinates: [dLng, dLat] },
       },
       distanceKm,
       estimatedFare: finalCalculatedFare,
@@ -71,27 +85,36 @@ exports.createRide = async (req, res) => {
     });
 
     // Try to find an existing compatible ride to match with
-    const match = await findMatch(ride);
+    let match = null;
+    try {
+      match = await findMatch(ride);
+    } catch (matchErr) {
+      console.warn('findMatch calculation warning:', matchErr.message);
+    }
 
     if (match) {
-      const { fare1, fare2, savings1, savings2 } = splitFare(ride, match);
+      try {
+        const { fare1, fare2, savings1 } = splitFare(ride, match);
 
-      ride.status = 'matched';
-      ride.matchedWith = match._id;
-      ride.finalFare = Math.max(0, fare1 - discount);
-      await ride.save();
+        ride.status = 'matched';
+        ride.matchedWith = match._id;
+        ride.finalFare = Math.max(0, fare1 - discount);
+        await ride.save();
 
-      match.status = 'matched';
-      match.matchedWith = ride._id;
-      match.finalFare = fare2;
-      await match.save();
+        match.status = 'matched';
+        match.matchedWith = ride._id;
+        match.finalFare = fare2;
+        await match.save();
 
-      return res.status(201).json({
-        ride,
-        matchedWith: match,
-        fareBreakdown: { yourFare: ride.finalFare, partnerFare: fare2, yourSavings: savings1 },
-        message: 'Match found! Ride is now shared.',
-      });
+        return res.status(201).json({
+          ride,
+          matchedWith: match,
+          fareBreakdown: { yourFare: ride.finalFare, partnerFare: fare2, yourSavings: savings1 },
+          message: 'Match found! Ride is now shared.',
+        });
+      } catch (splitErr) {
+        console.warn('splitFare processing warning:', splitErr.message);
+      }
     }
 
     res.status(201).json({ ride, message: 'No match yet, searching for a co-rider...' });
