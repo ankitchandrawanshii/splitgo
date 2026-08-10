@@ -57,14 +57,7 @@ function AppRoutes() {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/ride/:id"
-        element={
-          <PrivateRoute>
-            <RideStatus />
-          </PrivateRoute>
-        }
-      />
+      <Route path="/ride/:id" element={<RideStatus />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
