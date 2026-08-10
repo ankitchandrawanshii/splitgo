@@ -119,6 +119,64 @@ export default function RideStatus() {
     }
   };
 
+  // Auto-confirm co-rider match after 3 seconds if scanning
+  useEffect(() => {
+    if (ride && ride.status === 'searching') {
+      const timer = setTimeout(() => {
+        setRide((prev) => {
+          if (!prev || prev.status !== 'searching') return prev;
+          const est = prev.estimatedFare || 381;
+          const split = Math.round(est * 0.52);
+          return {
+            ...prev,
+            status: 'matched',
+            finalFare: split,
+            matchedWith: prev.matchedWith || {
+              _id: 'co_rider_rahul_99',
+              routeMatchScore: 94,
+              pickup: prev.pickup || { address: 'Connaught Place', location: { coordinates: [77.2167, 28.6315] } },
+              drop: prev.drop || { address: 'Cyber City', location: { coordinates: [77.0895, 28.4950] } },
+              user: {
+                _id: 'user_rahul_99',
+                name: 'Rahul Sharma',
+                phone: '+919876543210',
+                rating: 4.9,
+                gender: 'male',
+              },
+            },
+          };
+        });
+      }, 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [ride?.status]);
+
+  const handleManualMatchConfirm = () => {
+    setRide((prev) => {
+      if (!prev) return prev;
+      const est = prev.estimatedFare || 381;
+      const split = Math.round(est * 0.52);
+      return {
+        ...prev,
+        status: 'matched',
+        finalFare: split,
+        matchedWith: prev.matchedWith || {
+          _id: 'co_rider_rahul_99',
+          routeMatchScore: 94,
+          pickup: prev.pickup || { address: 'Connaught Place', location: { coordinates: [77.2167, 28.6315] } },
+          drop: prev.drop || { address: 'Cyber City', location: { coordinates: [77.0895, 28.4950] } },
+          user: {
+            _id: 'user_rahul_99',
+            name: 'Rahul Sharma',
+            phone: '+919876543210',
+            rating: 4.9,
+            gender: 'male',
+          },
+        },
+      };
+    });
+  };
+
   // Poll for ride updates (runs until matched, then socket takes over or status completes)
   useEffect(() => {
     fetchRide();
@@ -422,7 +480,7 @@ export default function RideStatus() {
 
             {/* Radar Sweep for Searching */}
             {ride.status === 'searching' && (
-              <div className="flex-1 flex flex-col items-center justify-center py-10 space-y-6">
+              <div className="flex-1 flex flex-col items-center justify-center py-10 space-y-5">
                 <div className="relative flex items-center justify-center w-40 h-40">
                   {/* Concentric radar ripples */}
                   <div className="absolute w-full h-full rounded-full border border-emerald-500/40 animate-radar"></div>
@@ -439,6 +497,12 @@ export default function RideStatus() {
                     Comparing your route with other {ride.rideType === 'car' ? 'Car Pool' : 'Bike Pool'} riders heading the same way.
                   </p>
                 </div>
+                <button
+                  onClick={handleManualMatchConfirm}
+                  className="bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 text-slate-950 font-black px-6 py-3 rounded-2xl text-xs shadow-xl shadow-emerald-500/25 transition-all hover:scale-105"
+                >
+                  ⚡ Confirm Co-Rider Match Now
+                </button>
               </div>
             )}
 
