@@ -60,15 +60,21 @@ const animatedVehicleIcon = L.divIcon({
   iconAnchor: [14, 14],
 });
 
-// Fit map to contain all coordinates
+// Fit map to contain all coordinates safely
 function FitMapBounds({ points }) {
   const map = useMap();
   useEffect(() => {
-    const validPoints = points.filter((p) => p && p[0] && p[1]);
-    if (validPoints.length > 1) {
-      map.fitBounds(validPoints, { padding: [50, 50] });
-    } else if (validPoints.length === 1) {
-      map.setView(validPoints[0], 14);
+    try {
+      const validPoints = points.filter(
+        (p) => Array.isArray(p) && p.length >= 2 && typeof p[0] === 'number' && typeof p[1] === 'number' && !isNaN(p[0]) && !isNaN(p[1])
+      );
+      if (validPoints.length > 1) {
+        map.fitBounds(validPoints, { padding: [50, 50] });
+      } else if (validPoints.length === 1) {
+        map.setView(validPoints[0], 14);
+      }
+    } catch (mapErr) {
+      console.warn('Map fit bounds warning:', mapErr);
     }
   }, [points, map]);
   return null;
@@ -452,10 +458,16 @@ export default function RideStatus() {
     );
   }
 
-  // Extract coordinates for the map
-  const myPickup = [ride.pickup.location.coordinates[1], ride.pickup.location.coordinates[0]];
-  const myDrop = [ride.drop.location.coordinates[1], ride.drop.location.coordinates[0]];
-  const partnerPickup = ride.matchedWith
+  // Extract coordinates safely for the map
+  const myPickup = (ride.pickup?.location?.coordinates && ride.pickup.location.coordinates.length >= 2)
+    ? [ride.pickup.location.coordinates[1], ride.pickup.location.coordinates[0]]
+    : [28.6315, 77.2167];
+
+  const myDrop = (ride.drop?.location?.coordinates && ride.drop.location.coordinates.length >= 2)
+    ? [ride.drop.location.coordinates[1], ride.drop.location.coordinates[0]]
+    : [28.4950, 77.0895];
+
+  const partnerPickup = (ride.matchedWith && typeof ride.matchedWith === 'object' && ride.matchedWith.pickup?.location?.coordinates && ride.matchedWith.pickup.location.coordinates.length >= 2)
     ? [ride.matchedWith.pickup.location.coordinates[1], ride.matchedWith.pickup.location.coordinates[0]]
     : null;
 
