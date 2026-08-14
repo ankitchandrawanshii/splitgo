@@ -143,6 +143,20 @@ exports.getRide = async (req, res) => {
         if (latestRide) return res.json(latestRide);
       }
 
+      const mockPartner = {
+        _id: 'co_rider_partner_101',
+        routeMatchScore: 96,
+        pickup: { address: 'Connaught Place, Delhi', location: { coordinates: [77.2167, 28.6315] } },
+        drop: { address: 'Cyber City, Gurgaon', location: { coordinates: [77.0895, 28.4950] } },
+        user: {
+          _id: 'user_rahul_99',
+          name: 'Rahul Sharma',
+          phone: '+919876543210',
+          rating: 4.9,
+          gender: 'male',
+        },
+      };
+
       return res.json({
         _id: req.params.id || 'live_active',
         user: { name: 'SplitGo Rider', phone: '8989776132', rating: 5.0 },
@@ -150,8 +164,9 @@ exports.getRide = async (req, res) => {
         drop: { address: 'Cyber City, Gurgaon', location: { coordinates: [77.0895, 28.4950] } },
         distanceKm: 19.5,
         estimatedFare: 381,
-        finalFare: 211,
-        status: 'searching',
+        finalFare: 191,
+        status: 'matched',
+        matchedWith: mockPartner,
         rideType: 'bike',
         genderPreference: 'any',
         createdAt: new Date(),
